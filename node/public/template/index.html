@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <link rel="stylesheet" href="./css/a.css"> -->
+  <link rel="stylesheet" href="/css/a.css">
+  <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.js"></script>
+</head>
+<body>
+  用户端 index
+  <img src="/upload/noimage.png" alt="">
+  <img id="img1" src="" alt="">
+
+  
+  <script>
+    $.ajax({
+      url:'http://localhost:3000/api/banner',
+      data:{_page:2,_limit:2},
+      success:function(res){
+        console.log('res',res)
+        img1.src=res.data[0].detail.icon
+      }
+    })
+
+    /* $.ajax({
+      // url:'https://api.douban.com/v2/movie/top250',
+      url:'http://localhost:3000/proxy/top250',
+      data:{start:1,count:1},
+      success:function(res){
+        console.log('res',res)
+      }
+    }) */
+
+  </script>
+</body>
+</html>

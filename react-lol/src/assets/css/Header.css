@@ -1,0 +1,5 @@
+.header{height: 50px;width: 80%;text-align: center;background: #fff;}
+.header .iconfont{font-size: 30px;}
+.header-i{float: left;width: 20%;}
+.header-h{float: left;width: 60%;height:50px;margin: 0 auto;line-height: 50px;}
+.header-span{float: right;width: 20%;}

@@ -1,0 +1,8 @@
+.font{width:100%;height: 6.5rem;display: block;margin-top: .5rem;}
+.font:nth-last-child(1){margin-bottom: 45px;}
+.font-img{width: 5rem;height: 5rem;float: left;}
+.font-img img{width: 4rem;height: 4rem;margin: .6rem 0 0 1rem;}
+.font-hp{float: left;margin-left: 1.5rem;}
+.font-hp h3{font-size: 15px; margin-top: .5rem;}
+.font-hp p{font-size: 12px;width:14rem; margin-top:.3rem;}
+.font-span{float: right;height: 5rem;line-height: 5rem;margin-right: 2rem;}
