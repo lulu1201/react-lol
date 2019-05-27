@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 import {Link} from 'react-router-dom'
 import '../assets/css/Login.css'
 import axios from 'axios';
+import connect from 'react-redux/es/connect/connect'
+import { axios2 } from '../store/actions'
 class Login extends Component{
     state={
         username:'',
@@ -41,18 +43,43 @@ class Login extends Component{
           [eve.target.name]:eve.target.value
         })
       }
-    login = async()=>{
-            let res = await axios({url:"/api/login",params:{username:this.state.username,password:this.state.password}})
-            console.log(res.data)
-            if(res.data.error === 0){
-                localStorage.setItem('zl_user',JSON.stringify(res.data.data))
-                this.props.history.push('/user')
+    login = ()=>{
+            // let res = await axios({url:"/api/login",params:{username:this.state.username,password:this.state.password}})
+            // console.log(res.data)
+            // if(res.data.error === 0){
+            //     localStorage.setItem('zl_user',JSON.stringify(res.data.data))
+            //     this.props.history.push('/user')
                 
-            }else{
-                alert('登录失败')
-            }
+            // }else{
+            //     alert('登录失败')
+            // }
+            this.props.get({
+                url:"/api/login",
+                params:{username:this.state.username,
+                    password:this.state.password
+                },
+                typename:'USER'
+            }).then(
+                    error=>{
+                        if(error === 0 ){
+                            localStorage.setItem('zl_user',JSON.stringify(this.props.user))
+                            this.props.history.push('/user')
+                        }else{
+                            alert('登录失败')
+                        }
+                    }
+                )
     }
 
 }
 
-export default Login;
+const State = (state)=>({
+    user:state.user
+})
+
+const Dispatch = (dispatch)=>({
+    get:({url,params,typename})=>dispatch(axios2({url,params,typename}))
+})
+
+
+export default connect(State,Dispatch)(Login)

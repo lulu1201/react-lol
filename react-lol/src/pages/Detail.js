@@ -1,14 +1,16 @@
 import React,{Component} from 'react'
 import '../assets/css/Detail.css'
 import axios from 'axios';
+import connect from 'react-redux/es/connect/connect'
+import {axios1} from '../store/actions'
 class Detail extends Component{
-    state={
-        lists:[]
-    }
+    // state={
+    //     lists:[]
+    // }
 
 
     render(){
-        let lists = this.state.lists
+        let lists = this.props.detail
         return (
             <div className="Detail">
                 <div className="header">
@@ -44,16 +46,27 @@ class Detail extends Component{
             </div>
         )
     }
-    async componentDidMount(){
+    componentDidMount(){
         let id = this.props.match.params.id;
-        let res = await axios({
-            url:"/api/follow/"+ id,
-        })
-        this.setState({
-            lists:res.data.data
-        })
+        // let res = await axios({
+        //     url:"/api/follow/"+ id,
+        // })
+        // this.setState({
+        //     lists:res.data.data
+        // })
+        this.props.get({url:"/api/follow/"+ id,typename:'DETAIL'})
+
     }
 
 }
 
-export default Detail;
+const State = (state)=>({
+    detail:state.detail,
+})
+
+const Dispatch = (dispatch)=>({
+    get:({url,params,typename})=>dispatch(axios1({dispatch,url,params,typename}))
+})
+
+
+export default connect(State,Dispatch)(Detail)

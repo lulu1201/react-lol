@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 import {Link} from 'react-router-dom'
 import '../assets/css/Life.css'
 import axios from 'axios';
+import connect from 'react-redux/es/connect/connect'
+import { axios1 } from '../store/actions'
 class Life extends Component{
     state={
         list:[]
@@ -9,8 +11,7 @@ class Life extends Component{
 
 
     render(){
-        let list = this.state.list;
-        console.log(this.props)
+        let list = this.props.life;
         return (
             <div className="Life">
                 <div className="header">
@@ -31,13 +32,13 @@ class Life extends Component{
                             className="aui-content-text" 
                             key={value} 
                             dataname="follow" 
-                            list={this.state.list}
+                            list={this.props.life}
                             to={{
                                 pathname:'/detail/' + item._id
                               }}
                               >
                                 <div className="aui-content-title">
-                                    <h2>{item.title}/{value}</h2>
+                                    <h2>{item.title}</h2>
                                 </div>
                                 <div className="my-car-thumbnail my-car-thumbnail-l"><img src={item.ims}/></div>
                                 <div className="aui-content-p">
@@ -56,12 +57,22 @@ class Life extends Component{
             </div>
         )
     }
-    async componentDidMount(){
-        let res = await axios({url:'api/follow',params:{_limit:10}})
-        this.setState({
-            list:res.data.data
-        })
+    componentDidMount(){
+        // let res = await axios({url:'api/follow',params:{_limit:10}})
+        // this.setState({
+        //     list:res.data.data
+        // })
+        this.props.get({url:'api/follow',params:{_limit:10},typename:'LIFE'})
     }
 }
 
-export default Life;
+const State = (state)=>({
+    life:state.life,
+})
+
+const Dispatch = (dispatch)=>({
+    get:({url,params,typename})=>dispatch(axios1({dispatch,url,params,typename}))
+})
+
+
+export default connect(State,Dispatch)(Life)

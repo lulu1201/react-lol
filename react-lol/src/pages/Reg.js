@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 import {Link} from 'react-router-dom'
 import '../assets/css/Reg.css'
 import axios from 'axios';
+import connect from 'react-redux/es/connect/connect'
+import { axios3 } from '../store/actions'
 class Reg extends Component{
     state={
         username:'',
@@ -42,29 +44,47 @@ class Reg extends Component{
         })
     }
 
-    reg= async ()=>{
+    reg= ()=>{
         if(this.state.username !== '' && this.state.password !== ''){
             let formData = new FormData();
             formData.append("username",this.state.username)
             formData.append("password",this.state.password)
 
-            let res= await axios({
+            // let res= await axios({
+            //     url:"/api/reg",
+            //     method:"POST",
+            //     data:formData
+            // })
+            this.props.get({
                 url:"/api/reg",
                 method:"POST",
-                data:formData
-            })
-            if(res.data.error === 0){
-                alert('注册成功，跳转登录页面')
-                this.props.history.push('/login')
-            }else{
-                alert("注册失败，请重试")
-            }
+                data:formData,
+                typename:'REG'
+            }).then(
+                error=>{
+                    if(error === 0){
+                        alert('注册成功，跳转登录页面')
+                        this.props.history.push('/login')
+                    }else{
+                        alert("注册失败，请重试")
+                    }
+
+                }
+            )
         }else{
             alert("注册失败，请重试")
         }
-        
     }
 
 }
 
-export default Reg;
+const State = (state)=>({
+    user:state.user
+})
+
+const Dispatch = (dispatch)=>({
+    get:({url,method,data,typename})=>dispatch(axios3({url,method,data,typename}))
+})
+
+
+export default connect(State,Dispatch)(Reg)
